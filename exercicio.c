@@ -38,18 +38,15 @@ void inserir_fim(int numero) {
         inicio = novo_no;
         return;
     }
+
     No* ultimo_no = inicio;
+
     while (ultimo_no->proximo != NULL)
         ultimo_no = ultimo_no->proximo;
     ultimo_no->proximo = novo_no;
     novo_no->anterior = ultimo_no;
-}
+    fim = novo_no;
 
-// Função para inserir um nó No final da lista
-void inserir_fim2(int numero) {
-    No* novo_no = criar_novo_no(numero);
-    novo_no->anterior = fim;
-    fim->proximo = novo_no;
 }
 
 void remover_inicio(No **inicio)
@@ -61,9 +58,36 @@ void remover_inicio(No **inicio)
     free(atual);
 }
 
-void remover_fim(No *inicio)
+void remover_fim(No** fim)
 {
+    No* fimRef = *fim;
+    fimRef->anterior->proximo = NULL;
+    *fim = fimRef->anterior;
+}
 
+void inserir_meio(int valor)
+{
+    No* novo_no = criar_novo_no(valor);
+    No* ultimo_no = inicio;
+
+    while (ultimo_no->proximo != NULL)
+    {
+        if(valor == ultimo_no->numero)
+        {
+            novo_no->proximo = ultimo_no->proximo;
+            ultimo_no->proximo = novo_no;
+            ultimo_no->proximo->anterior = novo_no;
+            novo_no->anterior = ultimo_no;
+            break;
+        }
+
+        ultimo_no = ultimo_no->proximo;
+    }
+}
+
+void remover_numero(int numero)
+{
+    
 }
 
 // Função para imprimir a lista
@@ -87,9 +111,13 @@ int main() {
     
     //Funções do exercicio:
     remover_inicio(&inicio);
+    remover_fim(&fim);
+    inserir_meio(3);
 
 
     imprimir(inicio);
+
+    printf("Fim = %d", fim->numero);
 
     return 0;
 }
